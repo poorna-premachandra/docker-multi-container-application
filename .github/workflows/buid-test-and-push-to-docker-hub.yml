@@ -1,0 +1,102 @@
+name: Github Actions for building, testing and pushing to Docker Hub
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checking out master branch
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./client
+          file: "Dockerfile.dev"
+          tags: multi_client:latest
+          load: true
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Running tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: multi_client:latest
+          run: CI=true npm run test
+
+  build_and_push_to_docker_hub:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checking out master branch
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image for client
+        uses: docker/build-push-action@v5
+        with:
+          context: ./client
+          file: "Dockerfile"
+          tags: multi_client:latest
+          load: true
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Docker image for nginx
+        uses: docker/build-push-action@v5
+        with:
+          context: ./nginx
+          file: "Dockerfile"
+          tags: multi_nginx:latest
+          load: true
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Docker image for server
+        uses: docker/build-push-action@v5
+        with:
+          context: ./server
+          file: "Dockerfile"
+          tags: multi_server:latest
+          load: true
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build Docker image for worker
+        uses: docker/build-push-action@v5
+        with:
+          context: ./worker
+          file: "Dockerfile"
+          tags: multi_worker:latest
+          load: true
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Login in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push client image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_client
+      - name: Push nginx image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_nginx
+      - name: Push server image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_server
+      - name: Push worker image to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_worker
