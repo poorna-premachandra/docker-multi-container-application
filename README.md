@@ -1,2 +1,2 @@
 # docker-multi-container-application
-A fibonacci calculating application utilizing microservice architecture via Docker
+An application to calculate fibonacci values which utilizes microservice architecture via Docker.
