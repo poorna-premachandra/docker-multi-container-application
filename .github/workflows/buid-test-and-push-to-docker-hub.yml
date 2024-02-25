@@ -33,6 +33,7 @@ jobs:
           run: CI=true npm run test
 
   build_and_push_to_docker_hub:
+    needs: build_and_test
     runs-on: ubuntu-latest
 
     steps:
