@@ -48,7 +48,7 @@ jobs:
         with:
           context: ./client
           file: "./client/Dockerfile"
-          tags: multi_client:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/multi_client:latest
           load: true
           push: false
           cache-from: type=gha
@@ -59,7 +59,7 @@ jobs:
         with:
           context: ./nginx
           file: "./nginx/Dockerfile"
-          tags: multi_nginx:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/multi_nginx:latest
           load: true
           push: false
           cache-from: type=gha
@@ -70,7 +70,7 @@ jobs:
         with:
           context: ./server
           file: "./server/Dockerfile"
-          tags: multi_server:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/multi_server:latest
           load: true
           push: false
           cache-from: type=gha
@@ -81,7 +81,7 @@ jobs:
         with:
           context: ./worker
           file: "./worker/Dockerfile"
-          tags: multi_worker:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/multi_worker:latest
           load: true
           push: false
           cache-from: type=gha
@@ -94,10 +94,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push client image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_client
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_client:latest
       - name: Push nginx image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_nginx
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_nginx:latest
       - name: Push server image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_server
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_server:latest
       - name: Push worker image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_worker
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/multi_worker:latest
