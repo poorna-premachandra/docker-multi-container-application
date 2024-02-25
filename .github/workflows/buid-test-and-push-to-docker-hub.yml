@@ -19,7 +19,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./client
-          file: "Dockerfile.dev"
+          file: "./client/Dockerfile.dev"
           tags: multi_client:latest
           load: true
           push: false
@@ -46,7 +46,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./client
-          file: "Dockerfile"
+          file: "./client/Dockerfile"
           tags: multi_client:latest
           load: true
           push: false
@@ -57,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./nginx
-          file: "Dockerfile"
+          file: "./nginx/Dockerfile"
           tags: multi_nginx:latest
           load: true
           push: false
@@ -68,7 +68,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./server
-          file: "Dockerfile"
+          file: "./server/Dockerfile"
           tags: multi_server:latest
           load: true
           push: false
@@ -79,7 +79,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./worker
-          file: "Dockerfile"
+          file: "./worker/Dockerfile"
           tags: multi_worker:latest
           load: true
           push: false
