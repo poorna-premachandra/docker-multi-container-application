@@ -6,6 +6,7 @@ import Fib from "./Fib";
 function App() {
   return (
     <BrowserRouter>
+      <h1>Fib Calculator</h1>
       <Routes>
         <Route exact path="/" element={<Fib />} />
         <Route path="/otherpage" element={<OtherPage />} />
