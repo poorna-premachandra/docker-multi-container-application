@@ -127,7 +127,7 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
           --application-name multi-docker \
-          --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-767397925184/docker-multi",S3Key="deploy_package.zip" \
+          --source-bundle S3Bucket="elasticbeanstalk-eu-north-1-767397925184",S3Key="./docker-multi/deploy_package.zip" \
           --version-label "ver-${{ github.sha }}" \
           --description "commit-sha-${{ github.sha }}"
 
